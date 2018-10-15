@@ -34,13 +34,15 @@
 
 帮助 ：`git help <verb> / git <verb> --help / man git-<verb>`
 
-提交文件三部曲 ：
+ 推送文件四部曲 ：
 
     1. git add
 
     2. git status
 
     3. git commit / git commit -m ''
+    
+    4. git push
 
 跳过使用暂存区域的方式 : `git commit -a -m 'added new benchmarks'`
 
@@ -85,6 +87,48 @@
 取消暂存文件 ：` git reset HEAD <file>`
 
 撤销对文件的修改 ：`git checkout -- <file>`
+
+查看已经配置的远程仓库服务器 ：`git remote`
+    
+    子选项：
+        -v ：显示需要读写远程仓库使用的 Git 保存的简写与其对应的 URL    
+
+添加远程仓库 ： `git remote add <shortname> <url>` 
+
+远程仓库中获得数据 ：`git fetch [remote-name]`
+
+自动的抓取然后合并远程分支到当前分支 ：`git pull`
+
+克隆一个仓库 ：`git clone <url>`
+
+推送到远程仓库 ：`git push [remote-name] [branch-name]`
+
+例 将 master 分支推送到 origin 服务器 ：`git push origin master`
+
+查看某一个远程仓库 ：`git remote show [remote-name]`
+     
+     查看更多信息 ：`git remote show`
+
+远程仓库重命名 ：`git remote rename`
+
+例 将 pb 重命名为 paul ：`git remote rename pb paul`
+
+远程仓库移除 ：`git remote rm [remote-name]`
+
+列出标签 ：`git tag`
+
+创建标签：
+
+     轻量标签：它只是一个特定提交的引用。如果你只是想用一个临时的标签，或者因为某些原因不想要保存那些信息，也用轻量化标签
+     附注标签（建议使用）：附注标签是存储在 Git 数据库中的一个完整对象。它们是可以被校验的；其中包含打标签者的名字、电子邮件地址、日期时间；还有一个标签信息；并且可以使用 GNU Privacy Guard （GPG）签名与验证。
+
+创建轻量标签 ：`git tag [tag-name]`
+
+创建附注标签：`git tag -a`
+
+> 一般与`-m''`搭配使用 例 git tag -a v3 -m 'BIMBox version 3'
+
+对过去的提交打标签 ：`git tag -a [tag-name] [sha1]`
 
 ## git的配置
 
