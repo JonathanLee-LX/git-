@@ -28,9 +28,29 @@
 
         任何一处协同工作用的服务器发生故障，事后都可以用任何一个镜像出来的本地仓库恢复。 因为每一次的克隆操作，实际上都是一次对代码仓库的完整备份。
 
+## git的一些重要概念
+### 三种状态
+- 已提交(commited) 已提交表示文件已经安全存储在本地的git数据库中
+- 已修改(modified) 已修改表示文件已经被修改了，并且没有被暂存
+- 已暂存(staged) 已暂存表示对一个已修改文件的当前版本做了标记，使之包含在下次提交的快照中。
 
+由此引入了git的三个工作区的概念。
+### 三个工作区
+- **git仓库** Git 仓库目录是 Git 用来保存项目的元数据和对象数据库的地方。 这是 Git 中最重要的部分，从其它计算机克隆仓库时，拷贝的就是这里的数据。
+- 暂存区域 暂存区域是一个文件，保存了下次将提交的文件列表信息，一般在 Git 仓库目录中。 有时候也被称作`‘索引’'，不过一般说法还是叫暂存区域。
+- 工作区 工作目录是对项目的某个版本独立提取出来的内容。 这些从 Git 仓库的压缩数据库中提取出来的文件，放在磁盘上供你使用或修改。
 
-### 常用命令
+**基本的git工作流程**
+
+1. 在工作目录中修改文件。
+
+2. 暂存文件，将文件的快照放入暂存区域。
+
+3. 提交更新，找到暂存区域的文件，将快照永久性存储到 Git 仓库目录。
+
+![git工作流程](https://git-scm.com/book/en/v2/images/areas.png)
+
+# 常用命令
 
 帮助 ：`git help <verb> / git <verb> --help / man git-<verb>`
 
@@ -41,7 +61,7 @@
     2. git status
 
     3. git commit / git commit -m ''
-    
+
     4. git push
 
 跳过使用暂存区域的方式 : `git commit -a -m 'added new benchmarks'`
@@ -53,12 +73,12 @@
 重命名 : `git mv file_from file_to`
 
 查看提交历史 ： `git log`
-            
+
     常用的选项:
     -p ：按补丁格式显示每个更新之间的差异
     --stat ：每次提交文件的简略的统计信息
     --pretty ：指定使用不同于默认格式的方式展示提交历史
-        子选项 ：  
+        子选项 ：
             oneline  将每个提交放在一行显示 例 git log --pretty=oneline
             short ：
             full :
@@ -88,12 +108,16 @@
 
 撤销对文件的修改 ：`git checkout -- <file>`
 
-查看已经配置的远程仓库服务器 ：`git remote`
-    
-    子选项：
-        -v ：显示需要读写远程仓库使用的 Git 保存的简写与其对应的 URL    
+**常用命令**
+- `git checkout .` 忽略所有的工作区改动
+- `git checkout [commitId] [file]` 将指定文件恢复到指定提交的状态
 
-添加远程仓库 ： `git remote add <shortname> <url>` 
+查看已经配置的远程仓库服务器 ：`git remote`
+
+    子选项：
+        -v ：显示需要读写远程仓库使用的 Git 保存的简写与其对应的 URL
+
+添加远程仓库 ： `git remote add <shortname> <url>`
 
 远程仓库中获得数据 ：`git fetch [remote-name]`
 
@@ -106,7 +130,7 @@
 例 将 master 分支推送到 origin 服务器 ：`git push origin master`
 
 查看某一个远程仓库 ：`git remote show [remote-name]`
-     
+
      查看更多信息 ：`git remote show`
 
 远程仓库重命名 ：`git remote rename`
