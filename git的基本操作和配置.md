@@ -123,7 +123,7 @@
 
 只关心某些文件或者目录的历史提交 : `git log --path`
 
-撤销操作 ： `git commit --amend`
+撤销更改提交说明 ： `git commit --amend`
 
 取消暂存文件 ：` git reset HEAD <file>`
 
@@ -200,6 +200,12 @@ git别名 ：`git config --global alias.[别名] [命令名]`
 
 `git config --global user.email [email-name]`
 
+`git config --global core.autocrlf [true | false ｜input]`
+
+    true:当签出代码时，LF会被转换成CRLF
+    input:在提交时把CRLF转换成LF，签出时不转换
+    false:取消此功能，把回车符记录在库中
+
 查看配置信息 ：`git config --list`
 
 > 可以通过输入 `git config <key>`  来检查 Git 的某一项配置 例 `git config user.name`检查用户名
@@ -207,9 +213,9 @@ git别名 ：`git config --global alias.[别名] [命令名]`
 
 ### 代码提交前需要进行的配置
 
-### hook的配置
+<!-- ### hook的配置
 
-## Sourcetree 的基本工作流程
+## Sourcetree 的基本工作流程 -->
 
 ![](images/commit-text.png)
 
@@ -217,5 +223,5 @@ git别名 ：`git config --global alias.[别名] [命令名]`
 
 ![](images/push.png)
 
-![](images/commit-success.png)
-
+![](images/push-success.png)
+#  asdasd
