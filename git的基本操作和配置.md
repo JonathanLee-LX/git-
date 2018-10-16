@@ -210,3 +210,14 @@ git别名 ：`git config --global alias.[别名] [命令名]`
 ### 代码提交前需要进行的配置
 
 ### hook的配置
+
+## Sourcetree 的基本工作流程
+
+![](images/commit-text.png)
+
+![暂存文件和添加说明](images/hold.png)
+
+![](images/push.png)
+
+![](images/commit-success.png)
+
