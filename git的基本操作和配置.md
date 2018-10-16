@@ -35,7 +35,7 @@
 
         在硬盘上保存补丁集（补丁是指文件修订前后的变化）；通过应用所有的补丁，可以重新计算出各个版本的文件内容。
 
-2.  集中化的版本控制
+2.  集中化的版本控制(svn)
 
         如何让在不同系统上的开发者协同工作？
 
@@ -45,7 +45,7 @@
 
         缺点：中央服务器的单点故障
 
-3.  分布式版本控制系统
+3.  分布式版本控制系统（git）
 
         如何解决本地版本控制系统保存在单一位置
 
@@ -123,7 +123,7 @@
 
 只关心某些文件或者目录的历史提交 : `git log --path`
 
-撤销更改提交说明 ： `git commit --amend`
+撤销操作 ： `git commit --amend`
 
 取消暂存文件 ：` git reset HEAD <file>`
 
@@ -173,6 +173,8 @@
 
 > 一般与`-m''`搭配使用 例 git tag -a v3 -m 'BIMBox version 3'
 
+查看标签 ：`git tag -n`
+
 对过去的提交打标签 ：`git tag -a [tag-name] [sha1]`
 
 共享标签 ：` git push origin [tag-name]`
@@ -204,18 +206,18 @@ git别名 ：`git config --global alias.[别名] [命令名]`
 
     true:当签出代码时，LF会被转换成CRLF
     input:在提交时把CRLF转换成LF，签出时不转换
-    false:取消此功能，把回车符记录在库中
+    false:与true 相反
 
 查看配置信息 ：`git config --list`
 
 > 可以通过输入 `git config <key>`  来检查 Git 的某一项配置 例 `git config user.name`检查用户名
 即 需要输入 git commit 时，只需要输入 git ci
 
-### 代码提交前需要进行的配置
+<!-- ### 代码提交前需要进行的配置
 
-<!-- ### hook的配置
+### hook的配置 -->
 
-## Sourcetree 的基本工作流程 -->
+## Sourcetree 的基本工作流程
 
 ![](images/commit-text.png)
 
@@ -224,4 +226,3 @@ git别名 ：`git config --global alias.[别名] [命令名]`
 ![](images/push.png)
 
 ![](images/push-success.png)
-#  asdasd
