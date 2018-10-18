@@ -1,6 +1,9 @@
 # git的基本操作和配置
 
 ## git的基本操作
+`git add [file]`
+`git commit -m <message> `
+`git push origin [branch:originBranch]`
 
 ## git的目录结构
 
