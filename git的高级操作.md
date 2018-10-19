@@ -43,3 +43,62 @@ git checkout testing
 ```
 这样就把HEAD指针指向了testing分支。
 ![切换分支至testing](https://git-scm.com/book/en/v2/images/head-to-testing.png)
+### 合并分支
+在我们开发完一个独立功能或者修复一个bug之后，需要将创建的这个分支的代码合并到我们签出的分支上，从而完成这个任务。
+首先我们要保证这个分支上开发的代码都已经被提交了，然后通过`git checkout`切换回我们签出的分支，然后通过`git merge <branchName>`合并我们提交的分支,merge会有两种情况：
+1. 第一种是**fast forward**,这种情况是在你要合并的分支领先于与当前分支，这种方式不会创建一个新的提交记录，而是将`HEAD`指向目标分支上最后一次提交，通过这种方式合并，git的提交记录会是一条直线，就像你在当前分支上进行了提交一样。
+例如：我们创建了一个新分支**feature1**,增加了一个新文件a.js并提交，然后切换到**master**分支，并进行合并，因为在master分支上没有进行其他的提交，git会默认使用**fast forward**的方式合并(`git merge feature1`)，这种方式git只需要简单地将HEAD指向**feature2**分支上的最后一次提交就可以了。
+    ```
+    git log --oneline --graph
+    * c3219a1(feature1) new a.js
+    * ebbb5a0(master)
+    ```
+2. 第一种合并方式会在当前分支上合并目标分支上的代码，并创建一次新的提交,这种方式我们需要使用`--no-ff`参数。
+例如：我们创建一个新分支**feature2**,增加一个新文件b.js并提交，然后切换回`master`分支合并**feature2**分支(`git merge feature2 --no-ff`)
+    ```
+    git log --oneline --graph
+    * ebbb5a0(HEAD -> master) Merge branch 'feature2'
+    |\
+    | *7ec8a26 (feature2) new b.js
+    |/
+    * 4e207c1(master)
+    ```
+### 删除分支
+为了避免在本地上存在太多的分支，我们在开发完一个分支并且合并到目标分支上之后，该分支就可以被删除掉了，使用命令`git branch -d <branchName>`就可以删除掉一个，如果该分支上的内容还没有被合并到当前的分支，会提示无法删除该分支，这个时候可以使用`git branch -D <branchName>`参数强制删除该分支。
+### 变基
+分支合并除了`merge`之外还有一种方式`rebase`，在进行`rebase`时,git会比较当前分支和目标分支，找到他们共同的祖先（即两个分支的共同的一次提交），然后提取当前分支上从该共同祖先提交以来的历次提交，将他们存为一个临时文件，然后以指定的目标分支的指定提交为基底，将这个提取出来的临时文件添加到该指定基底之后。这种方式的合并结果与**merge**没有任何区别，但是变基使得提交历史更加整洁。你在查看提交历史记录的时候会发现，尽管你的分支和其他人的分支是同时进行开发的，但是**rebase**后的提交记录像一条直线，就好像你们是串行地进行开发一样。如图一：
+![图一](https://git-scm.com/book/en/v2/images/basic-rebase-1.png)
+然后进行一般的合并(merge)如图二：
+![图二](https://git-scm.com/book/en/v2/images/basic-rebase-2.png)
+通过这种方式进行的合并提交历史记录会有分叉，如果通过变基的方式来合并分支，得到的历史记录还是会像一条直线。
+执行命令`git rebase master`,git会帮我们把expriment分支上多出的提交记录提取出来，然后以master分支最后一次提交为基底，将这些提取出来的提交记录放在master分支之后。如图三：
+![图三](https://git-scm.com/book/en/v2/images/basic-rebase-3.png)
+最后，我们只需切换到master分支上（`git checkout master`），再合并experiment分支即可（`git merge experiment`）,这样得到的master分支的提交记录如图四:
+![图四](https://git-scm.com/book/en/v2/images/basic-rebase-4.png)
+> **注意：**一般我们这样做的目的是为了确保在向远程分支推送时能保持提交历史的整洁——例如向某个其他人维护的项目贡献代码时。 在这种情况下，你首先在自己的分支里进行开发，当开发完成时你需要先将你的代码变基到 origin/master 上，然后再向主项目提交修改。 这样的话，该项目的维护者就不再需要进行整合工作，只需要快进合并便可。
+
+## 临时存储
+有时，当你在项目的一部分上已经工作一段时间后，所有东西都进入了混乱的状态，而这时你想要切换到另一个分支做一点别的事情。问题是，你不想仅仅因为过会儿回到这一点而为做了一半的工作创建一次提交。针对这个问题的答案是 git stash 命令。
+### 储存工作
+使用`git stash`命令可以临时存储当前未提交的内容。
+### 恢复工作
+在切换完分支并且工作结束后，再切换到先前切出的分支使用`git stash apply`命令可以恢复临时存储的内容。默认情况下，Git会将最近一次的临时存储内容恢复，如果你想指定恢复的内容，可以先通过`git stash list`列出所有的存储内容，一般会是这样：
+```
+$ git stash list
+stash@{0}: WIP on master: 049d078 added the index file
+stash@{1}: WIP on master: c264051 Revert "added file_size"
+stash@{2}: WIP on master: 21d80a5 added number to log
+$ git stash drop stash@{0}
+Dropped stash@{0} (364e91f3f268f0900bc3ee613f9f733e82aaed43)
+```
+然后再通过`git stash apply stash@{index}`就可以恢复指定索引的临时存储，通过这样的方式恢复的临时存储。
+### 创造性的临时存储
+有几个储藏的变种可能也很有用。 第一个非常流行的选项是 stash save 命令的 --keep-index 选项。 它告诉 Git 不要储藏任何你通过 git add 命令已暂存的东西。
+当你做了几个改动并只想**提交**其中的一部分，过一会儿再回来处理剩余改动时，这个功能会很有用。
+另一个经常使用储藏来做的事情是像储藏跟踪文件一样储藏未跟踪文件。 默认情况下，git stash 只会储藏已经在追踪中的文件。 如果指定 --include-untracked 或 -u 标记，Git 也会储藏任何创建的未跟踪文件。
+### 删除临时存储
+使用`git drop`可以删除一个临时存储
+
+## cherry-pick
+`cherry-pick`命令用于选择指定某一分支中一个或几个提交来进行操作。例如我们有两个分支master和feature，feature有一个提交增加了一个`y.js`文件，我们想要将这个提交合并到我们的`master`分支上，但是在这个提交之前所有的提交我们都不需要，这个时候我们就可以用到了`cherry-pick`这个命令。
+
